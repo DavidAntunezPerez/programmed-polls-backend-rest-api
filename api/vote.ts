@@ -1,4 +1,4 @@
-import { VercelRequest, VercelResponse } from '@vercel/node'
+import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { db } from '../config/firebaseConfig'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -8,9 +8,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     case 'POST':
       try {
         // TODO: Using the request body, update Firebase to add a new vote in votes collection, adding the vote result and timestamp
-        const { name = 'World' } = req.body
-        const docRef = db.collection('testCollection').doc('testDoc')
-        await docRef.set({ message: `Hello ${name}!` })
+        const { name = 'David' } = req.query;
+        const docRef = db.collection('votes').doc('vote');
+        await docRef.set({
+          message: `Voted by ${name}!`,
+        });
+    
+        // Read the document from Firestore
+        const doc = await docRef.get();
+        if (doc.exists) {
+          const data = doc.data();
+          return res.json({
+            message: `Successfully wrote and read from Firestore: ${data?.message}`,
+          });
+        }
         return res
           .status(201)
           .json({ message: 'Document created successfully' })
