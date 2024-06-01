@@ -1,5 +1,5 @@
-import { initializeApp, cert, getApps } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
+import { initializeApp, cert, getApps } from 'firebase-admin/app'
+import { getFirestore } from 'firebase-admin/firestore'
 
 if (!getApps().length) {
   initializeApp({
@@ -8,9 +8,9 @@ if (!getApps().length) {
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
       privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
     }),
-  });
+  })
 }
 
-const db = getFirestore();
+const db = getFirestore()
 
-export { db };
+export { db }
