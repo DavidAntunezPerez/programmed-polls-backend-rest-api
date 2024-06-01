@@ -1,6 +1,5 @@
 {
-  "repository": "https://github.com/vercel/examples.git",
-  "license": "MIT",
+  "version": "0.1.0",
   "private": true,
   "devDependencies": {
     "@types/node": "^20.13.0",
