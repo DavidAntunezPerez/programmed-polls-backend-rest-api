@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { db } from '../config/firebaseConfig' // Asegúrate de que esto apunta a tu configuración de Firestore
+import { db } from '../config/firebaseConfig'
 import { Timestamp } from 'firebase-admin/firestore'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
