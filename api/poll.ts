@@ -25,6 +25,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           })
         }
 
+        // Validate that the user exists in Firestore
+        const userRef = db.collection('users').doc(createdBy)
+        const userDoc = await userRef.get()
+
+        if (!userDoc.exists) {
+          return res.status(404).json({ message: 'User not found' })
+        }
+
         // Creating a new document in Firestore collection polls
         const newPoll = {
           title,
