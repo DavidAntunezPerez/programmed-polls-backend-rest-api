@@ -9,7 +9,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     case 'POST':
       try {
         // Data validation
-        const { title, description, options, frequency, duration, createdBy } =
+        const { title, description, options, frequency, duration, userId } =
           body
 
         if (
@@ -18,7 +18,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           !options ||
           !frequency ||
           !duration ||
-          !createdBy
+          !userId
         ) {
           return res.status(400).json({
             message: 'Bad Request: Missing fields in request body',
@@ -26,7 +26,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         // Validate that the user exists in Firestore
-        const userRef = db.collection('users').doc(createdBy)
+        const userRef = db.collection('users').doc(userId)
         const userDoc = await userRef.get()
 
         if (!userDoc.exists) {
@@ -42,7 +42,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           duration,
           isEnabled: true,
           createdAt: Timestamp.now(),
-          createdBy,
+          userId,
         }
 
         const pollRef = await db.collection('polls').add(newPoll)
