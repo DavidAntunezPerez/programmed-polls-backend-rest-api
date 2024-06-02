@@ -3,7 +3,7 @@ import { db } from '../config/firebaseConfig'
 import { Timestamp } from 'firebase-admin/firestore'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const { method, body } = req
+  const { method, body, query } = req
 
   switch (method) {
     case 'POST':
@@ -49,6 +49,43 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res
           .status(201)
           .json({ message: 'Poll created successfully', pollId: pollRef.id })
+      } catch (error) {
+        return res
+          .status(500)
+          .json({ message: 'Internal Server Error', error: error.message })
+      }
+
+    case 'GET':
+      try {
+        const { userId } = query
+
+        if (!userId) {
+          return res
+            .status(400)
+            .json({ message: 'Bad Request: Missing userId in query' })
+        }
+
+        const pollsSnapshot = await db
+          .collection('polls')
+          .where('userId', '==', userId)
+          .get()
+
+        if (pollsSnapshot.empty) {
+          return res
+            .status(404)
+            .json({ message: 'No polls found for this user' })
+        }
+
+        const polls = pollsSnapshot.docs.map(doc => {
+          const { userId, createdAt, ...data } = doc.data()
+          return {
+            pollId: doc.id,
+            ...data,
+            createdAt: createdAt.toDate().toISOString(),
+          }
+        })
+
+        return res.status(200).json(polls)
       } catch (error) {
         return res
           .status(500)
