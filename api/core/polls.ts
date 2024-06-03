@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { db } from '../config/firebaseConfig'
+import { db } from '../../config/firebaseConfig'
 import { Timestamp } from 'firebase-admin/firestore'
-import authenticate from '../config/authenticate'
+import authenticate from '../../config/authenticate'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Apply authentication middleware
