@@ -1,36 +1,25 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { db } from '../config/firebaseConfig'
 import { Timestamp } from 'firebase-admin/firestore'
+import authenticate from '../config/authenticate'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Apply authentication middleware
+  await new Promise(resolve => authenticate(req, res, resolve))
+
   const { method, body, query } = req
 
   switch (method) {
     case 'POST':
       try {
-        // Data validation
-        const { title, description, options, frequency, duration, userId } =
-          body
+        const { title, description, options, frequency, duration } = body
+        // Get userId from the authenticated user
+        const userId = (req as any).user.uid
 
-        if (
-          !title ||
-          !description ||
-          !options ||
-          !frequency ||
-          !duration ||
-          !userId
-        ) {
-          return res.status(400).json({
-            message: 'Bad Request: Missing fields in request body',
-          })
-        }
-
-        // Validate that the user exists in Firestore
-        const userRef = db.collection('users').doc(userId)
-        const userDoc = await userRef.get()
-
-        if (!userDoc.exists) {
-          return res.status(404).json({ message: 'User not found' })
+        if (!title || !description || !options || !frequency || !duration) {
+          return res
+            .status(400)
+            .json({ message: 'Bad Request: Missing fields in request body' })
         }
 
         // Creating a new document in Firestore collection polls
@@ -57,14 +46,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     case 'GET':
       try {
-        const { userId } = query
+        // Get userId from the authenticated user
+        const userId = (req as any).user.uid
 
-        if (!userId) {
-          return res
-            .status(400)
-            .json({ message: 'Bad Request: Missing userId in query' })
-        }
-
+        // Filter by user to get polls related to him
         const pollsSnapshot = await db
           .collection('polls')
           .where('userId', '==', userId)
