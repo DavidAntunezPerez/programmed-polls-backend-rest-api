@@ -2,10 +2,10 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "@types/node": "^20.13.0",
+    "@types/node": "^20.14.2",
     "@vercel/node": "^3.1.6",
     "typescript": "^5.4.5",
-    "vercel": "^34.2.4"
+    "vercel": "^34.2.5"
   },
   "dependencies": {
     "firebase-admin": "^12.1.1"
