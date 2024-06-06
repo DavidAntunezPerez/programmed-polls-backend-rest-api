@@ -6,16 +6,15 @@ import authenticate from '../../config/authenticate'
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Apply authentication middleware
   await new Promise(resolve => authenticate(req, res, resolve))
-
   const { method, body, query } = req
+
+  // Get userId from the authenticated user
+  const userId = (req as any).user.uid
 
   switch (method) {
     case 'POST':
       try {
         const { title, description, options, frequency, duration } = body
-        // Get userId from the authenticated user
-        const userId = (req as any).user.uid
-
         if (!title || !description || !options || !frequency || !duration) {
           return res
             .status(400)
@@ -46,9 +45,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     case 'GET':
       try {
-        // Get userId from the authenticated user
-        const userId = (req as any).user.uid
-
         // Filter by user to get polls related to him
         const pollsSnapshot = await db
           .collection('polls')
