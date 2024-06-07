@@ -28,7 +28,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         // Ensure that the poll belongs to the authenticated user
         if (pollData?.userId !== userId) {
           return res.status(403).json({
-            message: 'Forbidden, you do not have access to this poll.',
+            message: 'Forbidden, you do not have access to this poll',
           })
         }
 
@@ -43,6 +43,42 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         return res.status(200).json(response)
+      } catch (error) {
+        return res
+          .status(500)
+          .json({ message: 'Internal Server Error', error: error.message })
+      }
+
+    case 'DELETE':
+      try {
+        // Access the polls collection and get the document with the given ID
+        const pollDoc = await db
+          .collection('polls')
+          .doc(id as string)
+          .get()
+
+        if (!pollDoc.exists) {
+          return res.status(404).json({ message: 'Poll not found' })
+        }
+
+        const pollData = pollDoc.data()
+
+        // Ensure that the poll belongs to the authenticated user
+        if (pollData?.userId !== userId) {
+          return res.status(403).json({
+            message: 'Forbidden, you do not have access to this poll',
+          })
+        }
+
+        // Delete the poll with that doc ID
+        await db
+          .collection('polls')
+          .doc(id as string)
+          .delete()
+
+        return res
+          .status(200)
+          .json({ message: `Poll with ID ${id} was deleted successfully` })
       } catch (error) {
         return res
           .status(500)
