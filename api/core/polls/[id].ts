@@ -1,9 +1,9 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
 import { db } from '../../../config/firebaseConfig'
-import authenticate from '../../../config/authenticate'
 import type Poll from '../../../models/dataInterfaces'
-import { validate } from '../../../utils/validation'
 import { pollEditDTO } from '../../../models/schemas'
+import { validate } from '../../../utils/validation'
+import authenticate from '../../../utils/authenticate'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   await new Promise(resolve => authenticate(req, res, resolve))

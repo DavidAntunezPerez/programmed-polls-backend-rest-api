@@ -10,6 +10,7 @@
 ### Improvements
 
 - Data validation and strucured types, interfaces, schemas...
+- Moved autenticate.ts to utils folder
 
 ## 0.2.0
 
