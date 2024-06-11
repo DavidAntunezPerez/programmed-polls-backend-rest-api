@@ -2,11 +2,14 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { db } from '../../config/firebaseConfig'
 import { Timestamp } from 'firebase-admin/firestore'
 import authenticate from '../../config/authenticate'
+import { validate } from '../../utils/validation'
+import { pollCreateDTO } from '../../models/schemas'
+import type Poll from '../../models/dataInterfaces'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Apply authentication middleware
   await new Promise(resolve => authenticate(req, res, resolve))
-  const { method, body, query } = req
+  const { method, body } = req
 
   // Get userId from the authenticated user
   const userId = (req as any).user.uid
@@ -14,15 +17,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   switch (method) {
     case 'POST':
       try {
-        const { title, description, options, frequency, duration } = body
-        if (!title || !description || !options || !frequency || !duration) {
-          return res
-            .status(400)
-            .json({ message: 'Bad Request: Missing fields in request body' })
+        const { isValid, errors } = validate(body, pollCreateDTO)
+        if (!isValid) {
+          return res.status(400).json({ message: 'Bad Request', errors })
+        }
+
+        // Validating the request body
+        const { title, description, options, frequency, duration } =
+          body as Poll
+        if (
+          !title ||
+          !description ||
+          !Array.isArray(options) ||
+          typeof frequency !== 'number' ||
+          typeof duration !== 'number'
+        ) {
+          return res.status(400).json({
+            message: 'Bad Request: Missing or invalid fields in request body',
+          })
         }
 
         // Creating a new document in Firestore collection polls
-        const newPoll = {
+        const newPoll: Poll = {
           title,
           description,
           options,
@@ -38,6 +54,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           .status(201)
           .json({ message: 'Poll created successfully', pollId: pollRef.id })
       } catch (error) {
+        console.error('Error creating poll:', error)
         return res
           .status(500)
           .json({ message: 'Internal Server Error', error: error.message })
@@ -58,7 +75,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         const polls = pollsSnapshot.docs.map(doc => {
-          const { userId, createdAt, ...data } = doc.data()
+          const { userId, createdAt, ...data } = doc.data() as Poll
           return {
             pollId: doc.id,
             ...data,
@@ -68,6 +85,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         return res.status(200).json(polls)
       } catch (error) {
+        console.error('Error fetching polls:', error)
         return res
           .status(500)
           .json({ message: 'Internal Server Error', error: error.message })
