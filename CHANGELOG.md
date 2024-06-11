@@ -1,5 +1,17 @@
 # Version Changelog
 
+## 0.2.1
+
+### Bugfixes
+
+- Fixed issue where you could POST or PATCH a poll with different data value (for example boolean in title)
+- Fixes issue where you could create or patch a poll with a missing value (for example with no options)
+
+### Improvements
+
+- Data validation and strucured types, interfaces, schemas...
+- Moved autenticate.ts to utils folder
+
 ## 0.2.0
 
 ### Features
@@ -12,4 +24,3 @@
 ### Features
 
 - Initialized project
-

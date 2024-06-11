@@ -1,6 +1,9 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
 import { db } from '../../../config/firebaseConfig'
-import authenticate from '../../../config/authenticate'
+import type Poll from '../../../models/dataInterfaces'
+import { pollEditDTO } from '../../../models/schemas'
+import { validate } from '../../../utils/validation'
+import authenticate from '../../../utils/authenticate'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   await new Promise(resolve => authenticate(req, res, resolve))
@@ -23,27 +26,29 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           return res.status(404).json({ message: 'Poll not found' })
         }
 
-        const pollData = pollDoc.data()
+        const pollData = pollDoc.data() as Poll
 
         // Ensure that the poll belongs to the authenticated user
-        if (pollData?.userId !== userId) {
+        if (pollData.userId !== userId) {
           return res.status(403).json({
             message: 'Forbidden, you do not have access to this poll',
           })
         }
 
         const response = {
-          duration: pollData?.duration,
-          isEnabled: pollData?.isEnabled,
-          options: pollData?.options,
-          description: pollData?.description,
-          title: pollData?.title,
-          frequency: pollData?.frequency,
-          createdAt: pollData?.createdAt.toDate().toISOString(),
+          pollId: id,
+          title: pollData.title,
+          description: pollData.description,
+          options: pollData.options,
+          frequency: pollData.frequency,
+          duration: pollData.duration,
+          isEnabled: pollData.isEnabled,
+          createdAt: pollData.createdAt.toDate().toISOString(),
         }
 
         return res.status(200).json(response)
       } catch (error) {
+        console.error('Error fetching poll:', error)
         return res
           .status(500)
           .json({ message: 'Internal Server Error', error: error.message })
@@ -61,13 +66,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           return res.status(404).json({ message: 'Poll not found' })
         }
 
-        const pollData = pollDoc.data()
+        const pollData = pollDoc.data() as Poll
 
         // Ensure that the poll belongs to the authenticated user
-        if (pollData?.userId !== userId) {
+        if (pollData.userId !== userId) {
           return res.status(403).json({
             message: 'Forbidden, you do not have access to this poll',
           })
+        }
+
+        const { isValid, errors } = validate(body, pollEditDTO)
+        if (!isValid) {
+          return res.status(400).json({ message: 'Bad Request', errors })
         }
 
         // Extract the fields to update from the request body
@@ -75,7 +85,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           body
 
         // Create an object with the fields to update
-        const updatedFields = {
+        const updatedFields: Partial<Poll> = {
           ...(title !== undefined && { title }),
           ...(description !== undefined && { description }),
           ...(options !== undefined && { options }),
@@ -97,9 +107,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           .doc(id as string)
           .update(updatedFields)
         return res
-          .status(201)
-          .json({ message: 'Poll patched successfully', pollId: id })
+          .status(200)
+          .json({ message: 'Poll updated successfully', pollId: id })
       } catch (error) {
+        console.error('Error updating poll:', error)
         return res
           .status(500)
           .json({ message: 'Internal Server Error', error: error.message })
@@ -117,10 +128,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           return res.status(404).json({ message: 'Poll not found' })
         }
 
-        const pollData = pollDoc.data()
+        const pollData = pollDoc.data() as Poll
 
         // Ensure that the poll belongs to the authenticated user
-        if (pollData?.userId !== userId) {
+        if (pollData.userId !== userId) {
           return res.status(403).json({
             message: 'Forbidden, you do not have access to this poll',
           })
@@ -131,11 +142,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           .collection('polls')
           .doc(id as string)
           .delete()
-
         return res
           .status(200)
           .json({ message: `Poll with ID ${id} was deleted successfully` })
       } catch (error) {
+        console.error('Error deleting poll:', error)
         return res
           .status(500)
           .json({ message: 'Internal Server Error', error: error.message })
