@@ -1,3 +1,16 @@
+# Programmed Polls by An2 - Backend Rest API
+
+Create, schedule, and manage polls with ***Programmed Polls by An2***.
+Enjoy features such as poll voting, results visualization, and much more, all within this project. 
+
+This project contains a full set of applications and solutions:
+- [Backend REST API](https://github.com/DavidAntunezPerez/programmed-polls-backend-rest-api)
+- Web Application (Coming soon...)
+- Mobile Application (Coming soon...)
+
+## Index:
+1. [](#description-and-functionalities)
+
 # Node.js Hello World
 
 Simple Node.js + Vercel example that returns a "Hello World" response.
