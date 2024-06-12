@@ -77,12 +77,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           })
         }
 
-        const parsedStartTime = body.startTime
-          ? Timestamp.fromDate(new Date(body.startTime))
-          : pollData.startTime
-
         const { isValid, errors } = validate(
-          { ...body, startTime: parsedStartTime },
+          body,
           pollEditDTO,
         )
         if (!isValid) {
@@ -106,6 +102,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               'Bad Request: Frequency must be greater than or equal to duration',
           })
         }
+
+        const parsedStartTime = body.startTime
+        ? Timestamp.fromDate(new Date(body.startTime))
+        : pollData.startTime
 
         // Create an object with the fields to update
         const updatedFields: Partial<Poll> = {

@@ -17,7 +17,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   switch (method) {
     case 'POST':
       try {
-        const { isValid, errors } = validate({ ...body }, pollCreateDTO)
+        const { isValid, errors } = validate(body, pollCreateDTO)
         if (!isValid) {
           return res.status(400).json({ message: 'Bad Request', errors })
         }
