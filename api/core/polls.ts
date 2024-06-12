@@ -37,6 +37,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           })
         }
 
+        if(frequency < duration){
+          return res.status(400).json({
+            message: 'Bad Request: Frequency must be greater than or equal to duration',
+          })
+        }
+
         // Creating a new document in Firestore collection polls
         const newPoll: Poll = {
           title,

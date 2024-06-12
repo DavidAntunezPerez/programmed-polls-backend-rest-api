@@ -84,6 +84,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const { title, description, options, frequency, duration, isEnabled } =
           body
 
+        if (frequency < duration) {
+          return res.status(400).json({
+            message:
+              'Bad Request: Frequency must be greater than or equal to duration',
+          })
+        }
+
         // Create an object with the fields to update
         const updatedFields: Partial<Poll> = {
           ...(title !== undefined && { title }),

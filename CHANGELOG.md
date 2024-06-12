@@ -1,5 +1,11 @@
 # Version Changelog
 
+## 0.2.3
+
+### Bugfixes
+
+- Validating that the frequency is greater than or equal to the duration to avoid instance issues in POST and PATCH
+
 ## 0.2.2
 
 ### Improvements
