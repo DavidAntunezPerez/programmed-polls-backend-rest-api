@@ -16,6 +16,7 @@ export const pollCreateDTO: Schema = {
   options: { type: 'array', required: true, itemsType: 'string' },
   frequency: { type: 'number', required: true },
   duration: { type: 'number', required: true },
+  startTime: { type: 'date' },
 }
 
 export const pollEditDTO: Schema = {
@@ -24,5 +25,6 @@ export const pollEditDTO: Schema = {
   options: { type: 'array', itemsType: 'string' },
   frequency: { type: 'number' },
   duration: { type: 'number' },
+  startTime: { type: 'date' },
   isEnabled: { type: 'boolean' },
 }

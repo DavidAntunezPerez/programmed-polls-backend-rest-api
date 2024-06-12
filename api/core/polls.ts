@@ -37,6 +37,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           })
         }
 
+        if (frequency < duration) {
+          return res.status(400).json({
+            message:
+              'Bad Request: Frequency must be greater than or equal to duration',
+          })
+        }
+
+        // Use Timestamp.now() if startTime is not provided
+        const parsedStartTime = body.startTime
+          ? Timestamp.fromDate(new Date(body.startTime))
+          : Timestamp.now()
+
         // Creating a new document in Firestore collection polls
         const newPoll: Poll = {
           title,
@@ -44,6 +56,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           options,
           frequency,
           duration,
+          startTime: parsedStartTime,
           isEnabled: true,
           createdAt: Timestamp.now(),
           userId,
@@ -75,10 +88,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         const polls = pollsSnapshot.docs.map(doc => {
-          const { userId, createdAt, ...data } = doc.data() as Poll
+          const { userId, createdAt, startTime, ...data } = doc.data() as Poll
           return {
             pollId: doc.id,
             ...data,
+            startTime: startTime.toDate().toISOString(),
             createdAt: createdAt.toDate().toISOString(),
           }
         })

@@ -7,6 +7,7 @@ export default interface Poll {
   options: string[]
   frequency: number
   duration: number
+  startTime: Timestamp
   isEnabled: boolean
   createdAt: Timestamp
   userId: string
