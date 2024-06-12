@@ -1,5 +1,11 @@
 # Version Changelog
 
+## 0.2.2
+
+### Improvements
+
+- Updated README.md with the essential information of this repository
+
 ## 0.2.1
 
 ### Bugfixes
