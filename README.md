@@ -5,30 +5,28 @@ Enjoy features such as poll voting, results visualization, and much more, all wi
 
 This project contains a full set of applications and solutions:
 - [Backend REST API](https://github.com/DavidAntunezPerez/programmed-polls-backend-rest-api)
-- Web Application (Coming soon...)
-- Mobile Application (Coming soon...)
+- Web Application (*coming soon...*)
+- Mobile Application (*coming soon...*)
 
 ## Index:
-1. [](#description-and-functionalities)
+1. [Getting started](#getting-started)
+2. [Description and functionalities](#description-and-functionalities)
 
-# Node.js Hello World
+### Getting started
 
-Simple Node.js + Vercel example that returns a "Hello World" response.
+- To use the backend deployed version (Production and Preview):
+  -   [Production](https://programmed-polls-backend-rest-api.vercel.app/)
+  -   [Other deployments: (Preview, Branch deploys...)](https://github.com/DavidAntunezPerez/programmed-polls-backend-rest-api/deployments)
+ 
+> [!IMPORTANT]  
+> You need to have a JWT token or ID Token from my *Firebase Web Application connected apps* or any other way of using Firebase Auth system into programmed polls. Detailed explanation [here](#endpoints)
 
-## How to Use
-
-You can choose from one of the following two methods to use this repository:
-
-### One-Click Deploy
-
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/examples/tree/main/solutions/node-hello-world&project-name=node-hello-world&repository-name=node-hello-world)
-
-### Clone and Deploy
+  
+- If you want to run the project locally:
+First, install all the required packages in the *root of the repository*
 
 ```bash
-git clone https://github.com/vercel/examples/tree/main/solutions/node-hello-world
+npm install
 ```
 
 Install the Vercel CLI:
@@ -37,8 +35,9 @@ Install the Vercel CLI:
 npm i -g vercel
 ```
 
-Then run the app at the root of the repository:
+Then run the app locally use:
 
 ```bash
 vercel dev
 ```
+### Description and functionalities
