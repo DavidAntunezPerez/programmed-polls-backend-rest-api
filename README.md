@@ -52,19 +52,23 @@ Some of the most importants functionalities are:
   Firebase Authentication: Securely authenticate users using Firebase Auth, ensuring that only authorized users can access and manage polls.
   JWT Tokens: Utilize JWT tokens for API access, enhancing security and session management.
 
-- Poll management:
+- Poll management *(Working since v0.2.0)*:
   - Create Polls: Users can create new polls with multiple options for respondents to choose from.
   - Edit Polls: Modify existing polls, including changing options and updating descriptions.
   - Delete Polls: Remove polls that are no longer needed.
 
-- Schedule Polls: Set start and end dates for polls, allowing them to be automatically published and closed at specified times and schedule polls to run on a recurring basis (daily, weekly, monthly).
+- Schedule Polls *(Not developed yet)*: Set start and end dates for polls, allowing them to be automatically published and closed at specified times and schedule polls to run on a recurring basis (daily, weekly, monthly).
 
-- Voting Mechanism:
+- Voting Mechanism *(Not developed yet)*:
   - Cast Votes: Users can vote on active polls, with each vote being securely recorded.
   - Vote Validation: Ensure that each user can vote only once per poll. User must be authorized with Google Firebase Authentication in a Mobile or Web Application connected to Programmed Poll's firebase project.
   
-- Results Visualization:
+- Results Visualization *(Not developed yet)*:
   View poll results in real-time, displaying the number of votes each option has received.
+
+
+> [!NOTE]
+> You can view the version updates with new features, bugfixes and improvements in the [CHANGELOG.md](https://github.com/DavidAntunezPerez/programmed-polls-backend-rest-api/blob/main/CHANGELOG.md) located in this repository.
 
 ### Tech stack
 
