@@ -4,6 +4,7 @@ import type Poll from '../../../models/dataInterfaces'
 import { pollEditDTO } from '../../../models/schemas'
 import { validate } from '../../../utils/validation'
 import authenticate from '../../../utils/authenticate'
+import { Timestamp } from 'firebase-admin/firestore'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   await new Promise(resolve => authenticate(req, res, resolve))
@@ -43,6 +44,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           frequency: pollData.frequency,
           duration: pollData.duration,
           isEnabled: pollData.isEnabled,
+          startTime: pollData.startTime.toDate().toISOString(),
           createdAt: pollData.createdAt.toDate().toISOString(),
         }
 
@@ -75,14 +77,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           })
         }
 
-        const { isValid, errors } = validate(body, pollEditDTO)
+        const parsedStartTime = body.startTime
+          ? Timestamp.fromDate(new Date(body.startTime))
+          : pollData.startTime
+
+        const { isValid, errors } = validate(
+          { ...body, startTime: parsedStartTime },
+          pollEditDTO,
+        )
         if (!isValid) {
           return res.status(400).json({ message: 'Bad Request', errors })
         }
 
         // Extract the fields to update from the request body
-        const { title, description, options, frequency, duration, isEnabled } =
-          body
+        const {
+          title,
+          description,
+          options,
+          frequency,
+          duration,
+          isEnabled,
+          startTime,
+        } = body
 
         if (frequency < duration) {
           return res.status(400).json({
@@ -99,6 +115,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           ...(frequency !== undefined && { frequency }),
           ...(duration !== undefined && { duration }),
           ...(isEnabled !== undefined && { isEnabled }),
+          ...(startTime !== undefined && { startTime: parsedStartTime }),
         }
 
         // Check if no fields are provided to update

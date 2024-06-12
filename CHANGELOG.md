@@ -2,6 +2,12 @@
 
 ## 0.2.3
 
+### Improvements
+
+- Added startTime value in Polls to set the start time of the iterations for each poll in GET, POST and PATCH
+
+## 0.2.2
+
 ### Bugfixes
 
 - Validating that the frequency is greater than or equal to the duration to avoid instance issues in POST and PATCH
