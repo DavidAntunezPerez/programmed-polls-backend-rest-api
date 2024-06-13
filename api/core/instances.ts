@@ -68,7 +68,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 }
 
 async function createInstance(pollId: string, duration: number) {
-  /** // TODO: Start time does not have always to be NOW,
+  /**
+   * // TODO: Start time does not have always to be NOW,
    * sometimes instance should have existed 2 days ago, endpoint could be called Monday at 20:00 PM but startTime of the poll can be every week Monday 17:30 PM,
    *  so instance should be created with startTime at 17:30 PM.
    */
