@@ -13,7 +13,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           .collection('polls')
           .where('isEnabled', '==', true)
           .get()
-        const now = Timestamp.now()
+        const currentTimestamp = Timestamp.now()
 
         for (const pollDoc of pollsSnapshot.docs) {
           const pollData = pollDoc.data()
@@ -26,6 +26,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
           let createNewInstance = false
 
+          // If poll is not scheduled yet, dont create instance
+          if (pollData.startTime > currentTimestamp) {
+            continue
+          }
+
           if (lastInstanceSnapshot.empty) {
             createNewInstance = true
           } else {
@@ -36,7 +41,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                   pollData.frequency * 24 * 60 * 60 * 1000,
               ),
             )
-            if (now >= nextInstanceTime) {
+            if (currentTimestamp >= nextInstanceTime) {
               createNewInstance = true
             }
           }
@@ -63,6 +68,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 }
 
 async function createInstance(pollId: string, duration: number) {
+  /** // TODO: Start time does not have always to be NOW,
+   * sometimes instance should have existed 2 days ago, endpoint could be called Monday at 20:00 PM but startTime of the poll can be every week Monday 17:30 PM,
+   *  so instance should be created with startTime at 17:30 PM.
+   */
   const startTime = Timestamp.now()
   const endTime = Timestamp.fromDate(
     new Date(startTime.toDate().getTime() + duration * 24 * 60 * 60 * 1000),
