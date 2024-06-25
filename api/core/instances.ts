@@ -25,14 +25,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             .get()
 
           let createNewInstance = false
+          let newInstanceStartTime: Timestamp = Timestamp.now()
 
-          // If poll is not scheduled yet, dont create instance
+          // If poll is not scheduled yet, don't create instance
           if (pollData.startTime > currentTimestamp) {
             continue
           }
 
+          const pollStartDate = pollData.startTime.toDate()
+          const pollStartTime = new Date(
+            currentTimestamp.toDate().getFullYear(),
+            currentTimestamp.toDate().getMonth(),
+            currentTimestamp.toDate().getDate(),
+            pollStartDate.getHours(),
+            pollStartDate.getMinutes(),
+          )
+
           if (lastInstanceSnapshot.empty) {
             createNewInstance = true
+            newInstanceStartTime = Timestamp.fromDate(pollStartTime)
           } else {
             const lastInstance = lastInstanceSnapshot.docs[0].data()
             const nextInstanceTime = Timestamp.fromDate(
@@ -43,11 +54,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             )
             if (currentTimestamp >= nextInstanceTime) {
               createNewInstance = true
+              newInstanceStartTime = nextInstanceTime
             }
           }
 
           if (createNewInstance) {
-            await createInstance(pollDoc.id, pollData.duration)
+            await createInstance(
+              pollDoc.id,
+              pollData.duration,
+              newInstanceStartTime,
+            )
           }
         }
 
@@ -67,13 +83,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 }
 
-async function createInstance(pollId: string, duration: number) {
-  /**
-   * // TODO: Start time does not have always to be NOW,
-   * sometimes instance should have existed 2 days ago, endpoint could be called Monday at 20:00 PM but startTime of the poll can be every week Monday 17:30 PM,
-   *  so instance should be created with startTime at 17:30 PM.
-   */
-  const startTime = Timestamp.now()
+async function createInstance(
+  pollId: string,
+  duration: number,
+  startTime: Timestamp,
+) {
   const endTime = Timestamp.fromDate(
     new Date(startTime.toDate().getTime() + duration * 24 * 60 * 60 * 1000),
   )
