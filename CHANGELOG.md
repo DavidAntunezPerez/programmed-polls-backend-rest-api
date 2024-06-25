@@ -1,5 +1,11 @@
 # Version Changelog
 
+## 0.3.0
+
+### Features
+
+- Created instance interface and POST instances endpoint
+
 ## 0.2.3
 
 ### Improvements
