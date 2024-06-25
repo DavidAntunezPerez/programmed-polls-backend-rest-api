@@ -25,7 +25,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             .get()
 
           let createNewInstance = false
-          let newInstanceStartTime: Timestamp = Timestamp.now()
+          let newInstanceStartTime: Timestamp
 
           // If poll is not scheduled yet, don't create instance
           if (pollData.startTime > currentTimestamp) {
@@ -46,24 +46,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             newInstanceStartTime = Timestamp.fromDate(pollStartTime)
           } else {
             const lastInstance = lastInstanceSnapshot.docs[0].data()
-            const nextInstanceTime = Timestamp.fromDate(
+            let nextInstanceTime = Timestamp.fromDate(
               new Date(
                 lastInstance.startTime.toDate().getTime() +
                   pollData.frequency * 24 * 60 * 60 * 1000,
               ),
             )
-            if (currentTimestamp >= nextInstanceTime) {
+            while (currentTimestamp >= nextInstanceTime) {
               createNewInstance = true
               newInstanceStartTime = nextInstanceTime
-            }
-          }
 
-          if (createNewInstance) {
-            await createInstance(
-              pollDoc.id,
-              pollData.duration,
-              newInstanceStartTime,
-            )
+              // Create instance for the calculated nextInstanceTime
+              await createInstance(
+                pollDoc.id,
+                pollData.duration,
+                newInstanceStartTime,
+              )
+
+              // Move to the next instance time
+              nextInstanceTime = Timestamp.fromDate(
+                new Date(
+                  nextInstanceTime.toDate().getTime() +
+                    pollData.frequency * 24 * 60 * 60 * 1000,
+                ),
+              )
+            }
           }
         }
 
