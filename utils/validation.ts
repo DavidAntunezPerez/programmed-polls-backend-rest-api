@@ -17,7 +17,6 @@ export const validate = (data: any, schema: Schema): ValidationResult => {
         if (!Array.isArray(value)) {
           errors.push(`Invalid type for field: ${key}, expected array`)
         } else {
-          // Utilizar map para iterar sobre el array
           value.map((item: any, index: number) => {
             const itemValidator = validators[rules.itemsType!]
             if (!itemValidator(item)) {
