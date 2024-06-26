@@ -25,4 +25,5 @@ export interface Instance {
 export interface UserVote {
   userId: string
   votes: boolean[]
+  notes?: string
 }
