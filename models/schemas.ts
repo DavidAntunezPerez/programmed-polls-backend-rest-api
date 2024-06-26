@@ -28,3 +28,10 @@ export const pollEditDTO: Schema = {
   startTime: { type: 'date' },
   isEnabled: { type: 'boolean' },
 }
+
+// Vote
+
+export const voteCreateDTO: Schema = {
+  votes: { type: 'array', required: true, itemsType: 'boolean' },
+  notes: { type: 'string' },
+}

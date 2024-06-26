@@ -1,5 +1,11 @@
 # Version Changelog
 
+## 0.4.0
+
+### Features
+
+- Created POST vote endpoint , models and interfaces
+
 ## 0.3.2
 
 ### Improvements
