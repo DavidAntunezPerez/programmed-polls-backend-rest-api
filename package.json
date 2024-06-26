@@ -1,13 +1,13 @@
 {
-  "version": "0.3.1",
+  "version": "0.3.2",
   "private": true,
   "devDependencies": {
-    "@types/node": "^20.14.2",
-    "@vercel/node": "^3.1.6",
-    "typescript": "^5.4.5",
-    "vercel": "^34.2.5"
+    "@types/node": "^20.14.9",
+    "@vercel/node": "^3.2.0",
+    "typescript": "^5.5.2",
+    "vercel": "^34.2.8"
   },
   "dependencies": {
-    "firebase-admin": "^12.1.1"
+    "firebase-admin": "^12.2.0"
   }
 }
