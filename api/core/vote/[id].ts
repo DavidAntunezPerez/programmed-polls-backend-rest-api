@@ -17,6 +17,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   switch (method) {
     case 'POST':
       try {
+        // Validate that body contains the required fields and that they are of the correct type
+        const { isValid, errors } = validate(body, voteCreateDTO)
+        if (!isValid) {
+          return res.status(400).json({ message: 'Bad Request', errors })
+        }
+
         // Access the polls collection and get the document with the given ID
         const pollDoc = await db
           .collection('polls')
@@ -39,11 +45,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           return res.status(403).json({
             message: 'Forbidden, you do not have access to this poll',
           })
-        }
-
-        const { isValid, errors } = validate(body, voteCreateDTO)
-        if (!isValid) {
-          return res.status(400).json({ message: 'Bad Request', errors })
         }
 
         // Get the most recent instance for the given poll ID
