@@ -40,13 +40,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           return res.status(400).json({ message: 'Poll has been disabled' })
         }
 
-        // Ensure that the poll belongs to the authenticated user
-        if (pollData.userId !== userId) {
-          return res.status(403).json({
-            message: 'Forbidden, you do not have access to this poll',
-          })
-        }
-
         // Validate that votes array length matches the number of poll options
         if (votes.length !== pollData.options.length) {
           return res.status(400).json({
