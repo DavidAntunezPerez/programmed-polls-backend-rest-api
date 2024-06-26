@@ -57,7 +57,7 @@ Some of the most importants functionalities are:
   - Edit Polls: Modify existing polls, including changing options and updating descriptions.
   - Delete Polls: Remove polls that are no longer needed.
 
-- Schedule Polls *(Not developed yet)*: Set start and end dates for polls, allowing them to be automatically published and closed at specified times and schedule polls to run on a recurring basis (daily, weekly, monthly).
+- Schedule Polls *(Working since v0.3.0)*: Set start and end dates for polls, allowing them to be automatically published and closed at specified times and schedule polls to run on a recurring basis (daily, weekly, monthly).
 
 - Voting Mechanism *(Not developed yet)*:
   - Cast Votes: Users can vote on active polls, with each vote being securely recorded.
@@ -77,3 +77,4 @@ This Backend Rest API has been made with:
 - [Vercel Functions](https://vercel.com/docs/functions)
 - [Google Firebase (Firestore, Authentication...)](https://firebase.google.com/)
 - [Insomnia](https://insomnia.rest/)
+- [GitHub Actions](https://github.com/features/actions)
