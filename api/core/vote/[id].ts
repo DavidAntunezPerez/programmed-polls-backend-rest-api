@@ -47,6 +47,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           })
         }
 
+        // Validate that votes array length matches the number of poll options
+        if (votes.length !== pollData.options.length) {
+          return res.status(400).json({
+            message: `Number of options voted must be exactly ${pollData.options.length}`,
+          })
+        }
+
         // Get the most recent instance for the given poll ID
         const instancesSnapshot = await db
           .collection('instances')
