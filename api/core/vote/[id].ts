@@ -72,6 +72,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             .json({ message: 'Voting period for this poll has ended' })
         }
 
+        if (currentTimestamp < instanceData.startTime) {
+          return res.status(400).json({
+            message: 'Voting period for this poll has not started yet',
+          })
+        }
+
         // Check if the user has already voted in this instance
         const userVoteDoc = await db
           .collection('instances')
