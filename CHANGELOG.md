@@ -1,5 +1,11 @@
 # Version Changelog
 
+## 0.3.2
+
+### Improvements
+
+- Updated project dependencies to avoid security issues
+
 ## 0.3.1
 
 ### Fixes
