@@ -34,16 +34,36 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
           const pollStartDate = pollData.startTime.toDate()
           const pollStartTime = new Date(
-            currentTimestamp.toDate().getFullYear(),
-            currentTimestamp.toDate().getMonth(),
-            currentTimestamp.toDate().getDate(),
+            pollStartDate.getFullYear(),
+            pollStartDate.getMonth(),
+            pollStartDate.getDate(),
             pollStartDate.getHours(),
             pollStartDate.getMinutes(),
           )
 
           if (lastInstanceSnapshot.empty) {
+            // No previous instances, create the first one
             createNewInstance = true
+
+            // Set the first instance start time to the poll's start time
             newInstanceStartTime = Timestamp.fromDate(pollStartTime)
+
+            // Create instances in a loop until we reach the current time
+            while (currentTimestamp >= newInstanceStartTime) {
+              await createInstance(
+                pollDoc.id,
+                pollData.duration,
+                newInstanceStartTime,
+              )
+
+              // Move to the next instance time
+              newInstanceStartTime = Timestamp.fromDate(
+                new Date(
+                  newInstanceStartTime.toDate().getTime() +
+                    pollData.frequency * 24 * 60 * 60 * 1000,
+                ),
+              )
+            }
           } else {
             const lastInstance = lastInstanceSnapshot.docs[0].data()
             let nextInstanceTime = Timestamp.fromDate(

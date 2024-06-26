@@ -1,5 +1,12 @@
 # Version Changelog
 
+## 0.3.1
+
+### Fixes
+
+- Fixed issues where you could not generate new instances of recently created Polls.
+- Fixed issues where if a Poll was not iterated, instances endpoint would not iterate and generated previous instances when being called for the first time.
+
 ## 0.3.0
 
 ### Features
