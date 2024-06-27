@@ -2,6 +2,7 @@ import { db } from '../../../config/firebaseConfig'
 import { VercelRequest, VercelResponse } from '@vercel/node'
 import Poll, { Instance, UserVote } from '../../../models/dataInterfaces'
 import authenticate from '../../../utils/auth/authenticate'
+import getMailFromUid from '../../../utils/auth/getMailFromUid'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   await new Promise(resolve => authenticate(req, res, resolve))
@@ -71,23 +72,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         // Count votes and collect admin-specific data if applicable
-        userVotesSnapshot.forEach(userVoteDoc => {
+        for (const userVoteDoc of userVotesSnapshot.docs) {
           const userVoteData = userVoteDoc.data() as UserVote
+          const userEmail = await getMailFromUid(userVoteData.userId)
           userVoteData.votes.forEach((vote, index) => {
             if (vote) {
               response.optionCount[index]++
               if (pollData.userId === userId) {
-                response.usersVotes[index].userVotes.push(userVoteData.userId)
+                response.usersVotes[index].userVotes.push(userEmail)
               }
             }
           })
           if (pollData.userId === userId && userVoteData.notes) {
             response.additionalNotes.push({
-              user: userVoteData.userId,
+              user: userEmail,
               note: userVoteData.notes,
             })
           }
-        })
+        }
 
         // Calculate total number of votes
         const sumTotalVotes: number = response.optionCount.reduce(
