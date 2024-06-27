@@ -1,7 +1,7 @@
 import { db } from '../../../config/firebaseConfig'
 import { VercelRequest, VercelResponse } from '@vercel/node'
 import Poll, { Instance, UserVote } from '../../../models/dataInterfaces'
-import authenticate from '../../../utils/authenticate'
+import authenticate from '../../../utils/auth/authenticate'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   await new Promise(resolve => authenticate(req, res, resolve))
