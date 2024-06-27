@@ -1,0 +1,22 @@
+name: Refresh and Create Instances
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+
+jobs:
+  call_endpoint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call instances endpoint
+        run: |
+          curl -X POST https://programmed-polls-backend-rest-api.vercel.app/api/core/instances
+
+  workflow-keepalive:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - uses: liskin/gh-workflow-keepalive@v1
