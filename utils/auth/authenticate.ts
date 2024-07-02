@@ -1,5 +1,5 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
-import { auth } from '../config/firebaseConfig'
+import { auth } from '../../config/firebaseConfig'
 
 const authenticate = async (
   req: VercelRequest,

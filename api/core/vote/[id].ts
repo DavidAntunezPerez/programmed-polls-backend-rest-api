@@ -2,7 +2,7 @@ import { db } from '../../../config/firebaseConfig'
 import { Timestamp } from 'firebase-admin/firestore'
 import { VercelRequest, VercelResponse } from '@vercel/node'
 import Poll, { Instance, UserVote } from '../../../models/dataInterfaces'
-import authenticate from '../../../utils/authenticate'
+import authenticate from '../../../utils/auth/authenticate'
 import { validate } from '../../../utils/validation'
 import { voteCreateDTO } from '../../../models/schemas'
 

@@ -4,7 +4,7 @@ import { Timestamp } from 'firebase-admin/firestore'
 import type Poll from '../../models/dataInterfaces'
 import { pollCreateDTO } from '../../models/schemas'
 import { validate } from '../../utils/validation'
-import authenticate from '../../utils/authenticate'
+import authenticate from '../../utils//auth/authenticate'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Apply authentication middleware
