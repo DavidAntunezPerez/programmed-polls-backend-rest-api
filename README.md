@@ -103,7 +103,7 @@ First of all, you need to know that most of these endpoints require **_authentic
 
      - POST _/polls_:
 
-       To create a Poll, you must provide a TITLE, DESCRIPTION, FREQUENCY _(poll iteration frequency in DAYS)_, DURATION _(poll voting period duration in DAYS)_, STARTTIME _(this is an OPTIONAL value to set a different start time from the creation time of the poll)_, OPTIONS _(array of strings with the different options that you want to include in the poll)_ and USERID _(the administrator userID that will create the poll (will be automated in the future))_.
+       To create a Poll, you must provide a TITLE, DESCRIPTION, FREQUENCY _(poll iteration frequency in DAYS)_, DURATION _(poll voting period duration in DAYS)_, STARTTIME _(this is an OPTIONAL value to set a different start time from the creation time of the poll)_ and OPTIONS _(array of strings with the different options that you want to include in the poll)_.
 
        This is be a JSON body example with all the different data:
 
@@ -113,8 +113,7 @@ First of all, you need to know that most of these endpoints require **_authentic
          "description": "Can you vote?",
          "options": ["Option 1", "Option 2", "Option 3"],
          "frequency": 7,
-         "duration": 3,
-         "userId": "ID123"
+         "duration": 3
        }
        ```
 
