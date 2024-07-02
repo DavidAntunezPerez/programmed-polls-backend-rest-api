@@ -141,10 +141,10 @@ First of all, you need to know that most of these endpoints require ***authentic
         }
         ```
 
-        If you want to get a single Poll information, you can do */polls/{id}*, where ID is the Poll ID that you want to get.
+        If you want to get a single Poll information, you can do */polls/{pollId}*, where ID is the Poll ID that you want to get.
         > You can get the Poll ID by: *using GET /polls endpoint (named as pollID)* or *creating a Poll with POST /polls (will be shown in response as pollID)*.
 
-        Finally, call the endpoint GET */polls/pollId* without any body provided and this will be the example result:
+        Finally, call the endpoint GET */polls/{pollId}* without any body provided and this will be the example result:
         Response example:
          ```json
            {
@@ -164,7 +164,7 @@ First of all, you need to know that most of these endpoints require ***authentic
          ```
 
    
-       - PATCH */polls/{id}*:
+       - PATCH */polls/{pollId}*:
          
          This endpoint will let the poll administrator edit a Poll by ID. You can provide different values to edit (Rest of the information will remain the same):
 
@@ -177,13 +177,118 @@ First of all, you need to know that most of these endpoints require ***authentic
             }
            ```
 
-        - DELETE */polls/*:
+        - DELETE */polls/{pollId}*:
     
           This endpoint will let the poll administrator delete a Poll by ID. 
           No body or extra information must be provided in the request.
           
   > [!CAUTION]
   > Removing a Poll is a permanent action and will stop votation periods and future results.
+
+
+  - */vote*:
+
+    *These endpoints require from authentication to work.* With vote endpoints you can *submit a vote* in votation periods (instances of a poll).
+
+    - POST */vote/{pollId}*:
+      With this endpoint, any user is able to vote into a votation period of a poll. Users can also add an optional votation note. Votation is based in the order of options of the Poll.
+      For example, if a poll contains the options ["Monday", "Tuesday", "Sunday"], users will submit an array of booleans based on the options: [true, false, false] (this would be a votation for Monday option).
+      Users can vote for one or more options (if you want users to vote for a single-option it must be done in frontend). Field "notes" is optional and will be a string with the additional notes of an user.
+      Votations will be stored in each instance and this endpoints will only work for the ***last instance of that Poll***. If votation period is not opened yet or poll is not enabled, users wont be able to submit a vote.
+
+      JSON Body example:
+      ```json
+        {
+          "votes": [true, false, true],
+          "notes": "I am not available in Tuesday due to medical reasons."
+        }
+
+      ```
+
+  > [!IMPORTANT]  
+  > Votation options array must contain exactly the same size as the value options of the poll and each value in the array must be a boolean.
+
+   - */results*:
+     
+     *These endpoints require from authentication to work.* With vote endpoints you can *submit a vote* in votation periods (instances of a poll). With resulsts endpoints administrators and general users can visualize         votation stadistics based on the *last instance available* of a poll.
+
+     - GET */results/{pollId}*:
+       With this endpoint, users will be able to visualize stadistics of the *last votation period of a poll*. Body of the request must be empty and no extra information is needed but PollId.
+       Every user will be able to view:
+       
+       **GENERAL INFORMATION**:
+        - **`pollTitle`**: Display the title of the poll.
+        - **`pollDescription`**: Display the description of the poll to provide more context.
+        - **`startTime`**: Start date of the instance.
+        - **`endTime`**: End date of the instance.
+        - **`optionCount`**: Array with the vote count results for all options.
+      
+        **STADISTICAL INFORMATION**:
+        - **`totalUsers`**: Total count of users who voted.
+        - **`totalVotes`**: Total count of votes.
+        - **`completionRate`**: Percentage of options voted on by participants.
+        - **`votingPeriod`**: Duration of the voting period (endTime - startTime).
+
+        Aditionally, administrators and poll owners will be able to visualize extra and detailed information:
+       
+        **ADMINISTRATOR DATA**:
+       - **`additionalNotes`**: Array of strings containing all notes provided by users.
+       - **`usersVotes`**: Display which emails voted for which options.
+      
+        This is an example of a JSON response
+        ```json
+        {
+          "pollTitle": "Test",
+          "pollDescription": "Can you vote?",
+          "startTime": "2024-07-02T06:26:00.000Z",
+          "endTime": "2024-07-05T06:26:00.000Z",
+          "optionCount": [
+            2,
+            1
+          ],
+          "totalUsers": 2,
+          "totalVotes": 3,
+          "usersVotes": [
+            {
+              "optionName": "Yes",
+              "userVotes": [
+                "user1@user.com",
+                "user2@user.com"
+              ]
+            },
+            {
+              "optionName": "No",
+              "userVotes": [
+                "user1@user.com"
+                ]
+            }
+          ],
+          "additionalNotes": [
+                {
+                  "user": "user1@user.com",
+                  "note": "I had 2 errors before being able to vote."
+                }
+            ],
+          "completionRate": [
+            0.66,
+            0.33
+          ],
+          "votingPeriod": "3 days, 0 hours, 0 minutes, 0 seconds"
+        }
+
+        ```
+    
+
+   - */instances*:
+
+     *These endpoints DOES NOT require from authentication to work.* Instances endpoints are much different from the previous ones. These endpoints have no authentification and will not provide the user any information.
+
+     - POST */instances*:
+       This is generally an endpoint done for automatization of creation of instances. An instance is a entity of each poll that will contain all the user votes in certain period of time. They can also be called                 *votation periods*. A votation period will last as much as it is set in the Parent Poll (in the value duration). Iteration and creation of instances will depend on the frequency set on their parent Poll.
+       When calling this endpoint, the backend will check if there are new instances to create in this period of time and will create all the needed instances to allow users to vote. It can be called manually by anyone          because it will not give any information but it has been made to be an automated process for the scheduled polls.
+
+  > [!NOTE]  
+  > Instances endpoint is being called each *fifteen minutes* with Github Actions pipelines. This proccess is automated and will allow the generation of votation periods in a scheduled way.
           
 ### Tech stack
 
@@ -196,3 +301,12 @@ This Backend Rest API has been made with:
 - [GitHub Actions](https://github.com/features/actions)
 
 ### Contact and Support
+
+If you have any questions, issues, or suggestions regarding this project, please don't hesitate to reach out:
+
+- You can always open a new [issue](https://github.com/DavidAntunezPerez/programmed-polls-backend-rest-api/issues) or [discussion](https://github.com/DavidAntunezPerez/programmed-polls-backend-rest-api/discussions) in this repository.
+- For contact or special support/questions... you can contact a repository administrator:
+  - David Antúnez Pérez: [GitHub](https://github.com/davidantunezperez), [eMail](mailto:antunezdavid2003@gmail.com) or [Linkedin](https://www.linkedin.com/in/davidantunezperez).
+ 
+Thank you for your interest and support!
+
