@@ -1,5 +1,12 @@
 # Version Changelog
 
+## 1.0.2
+
+### Improvements
+
+- Refactored instances creation as an util function
+- If an user creates a poll with no startTime or with the same startTime as current time, poll's instances will be created automatically as soon as the poll is created
+
 ## 1.0.1
 
 ### Improvements
