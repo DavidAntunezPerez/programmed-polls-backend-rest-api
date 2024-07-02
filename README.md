@@ -15,7 +15,9 @@ This project contains a full set of applications and solutions:
 
 1. [Getting started](#getting-started)
 2. [Description and functionalities](#description-and-functionalities)
+    - [Endpoints in detail](#endpoints-in-detail)
 3. [Tech stack](#tech-stack)
+4. [Contact and Support](#contact-and-support)
 
 ### Getting started
 
@@ -24,7 +26,7 @@ This project contains a full set of applications and solutions:
   - [Other deployments: (Preview, Branch deploys...)](https://github.com/DavidAntunezPerez/programmed-polls-backend-rest-api/deployments)
 
 > [!IMPORTANT]  
-> You need to have a JWT token or ID Token from my _Firebase Web Application connected apps_ or any other way of using Firebase Auth system into programmed polls in order to use the backend endpoints. Detailed explanation [here](#endpoints)
+> You need to have a JWT token or ID Token from my _Firebase Web Application connected apps_ or any other way of using Firebase Auth system into programmed polls in order to use the backend endpoints. Detailed explanation [here](#endpoints-in-detail)
 
 - If you want to run the project locally:
   First, install all the required packages in the _root of the repository_
@@ -72,6 +74,117 @@ Some of the most importants functionalities are:
 > [!NOTE]
 > You can view the version updates with new features, bugfixes and improvements in the [CHANGELOG.md](https://github.com/DavidAntunezPerez/programmed-polls-backend-rest-api/blob/main/CHANGELOG.md) located in this repository.
 
+#### Endpoints in detail
+
+First of all, you need to know that most of these endpoints require ***authentication*** to work. To authenticate, you must [use any of the project-related frontend applications](#related-repositories), which are already connected to this backend OR you can [ask for your own authentification credentials](#contact-and-support) to the project support administrator. Once you have the credentials, you can use the Google Authentication JWT Token in your requests (as a Bearer Token) for all endpoints that require authentication.
+
+1. ***CORE ENDPOINTS*** *(located in /api/core/*)*:
+   - */polls*:
+     
+     *These endpoints require from authentication to work.* With polls endpoints you can *create, edit, get and delete* polls.
+
+     - POST */polls*:
+       
+       To create a Poll, you must provide a TITLE, DESCRIPTION, FREQUENCY *(poll iteration frequency in DAYS)*, DURATION *(poll voting period duration in DAYS)*, STARTTIME *(this is an OPTIONAL value to set a different           start time from the creation time of the poll)*, OPTIONS *(array of strings with the different options that you want to include in the poll)* and USERID *(the administrator userID that will create the poll (will          be automated in the future))*.
+       This is be a JSON body example with all the different data:
+       ```json
+       {
+          "title": "Poll Title",
+          "description": "Can you vote?",
+          "options": ["Option 1", "Option 2", "Option 3"],
+          "frequency": 7,
+          "duration": 3,
+          "userId": "ID123"
+        }
+       ```
+       
+
+      - GET */polls*:
+        
+        There are two different ways of getting a poll information: by ID (individually) or get all the polls related to an user as a list.
+
+        If you want to just list all the polls related to an user, you can just call the GET */polls* endpoints. No body needs to be provided. This will list all the different Polls related to the authenticated user and         show them in the response in this format:
+       Response example:
+        ```json
+        {
+          [
+            {
+              "pollId": "pollID1",
+              "duration": 3,
+              "isEnabled": true,
+              "options": [
+                "1",
+                "2",
+                "3"
+              ],
+              "description": "What do we do?",
+              "title": "Numeric decision",
+              "frequency": 7,
+              "startTime": "2024-06-25T11:37:55.560Z",
+              "createdAt": "2024-06-25T11:37:55.560Z"
+            },
+            {
+              "pollId": "pollID2",
+              "duration": 3,
+              "isEnabled": true,
+              "options": [
+                "Yes",
+                "No"
+              ],
+              "description": "Can you vote?",
+              "title": "Test",
+              "frequency": 7,
+              "startTime": "2024-07-02T06:26:29.380Z",
+              "createdAt": "2024-07-02T06:26:29.380Z"
+            }
+          ]
+        }
+        ```
+
+        If you want to get a single Poll information, you can do */polls/{id}*, where ID is the Poll ID that you want to get.
+        > You can get the Poll ID by: *using GET /polls endpoint (named as pollID)* or *creating a Poll with POST /polls (will be shown in response as pollID)*.
+
+        Finally, call the endpoint GET */polls/pollId* without any body provided and this will be the example result:
+        Response example:
+         ```json
+           {
+            "pollId": "pollId1",
+            "title": "Test",
+            "description": "Can you vote?",
+            "options": [
+              "Yes",
+              "No",
+            ],
+            "frequency": 7,
+            "duration": 3,
+            "isEnabled": true,
+            "startTime": "2024-06-03T10:38:09.630Z",
+            "createdAt": "2024-06-03T10:38:09.012Z"
+          }
+         ```
+
+   
+       - PATCH */polls/{id}*:
+         
+         This endpoint will let the poll administrator edit a Poll by ID. You can provide different values to edit (Rest of the information will remain the same):
+
+         TITLE, DESCRIPTION, OPTIONS *(as an array of strings)*, FREQUENCY *(poll iteration frequency in DAYS)*, DURATION *(poll voting period duration in DAYS)*, STARTTIME, ISENABLED *(if poll is not enabled, there               will be no more votation periods until its enabled again)*.
+         JSON body example:
+          ```json
+            {
+               "title": "New Poll Title",
+              "startTime": "2024-06-12T09:23:20.390Z"
+            }
+           ```
+
+        - DELETE */polls/*:
+    
+          This endpoint will let the poll administrator delete a Poll by ID. 
+          No body or extra information must be provided in the request.
+          
+  > [!CAUTION]
+  > Removing a Poll is a permanent action and will stop votation periods and future results.
+          
 ### Tech stack
 
 This Backend Rest API has been made with:
@@ -81,3 +194,5 @@ This Backend Rest API has been made with:
 - [Google Firebase (Firestore, Authentication...)](https://firebase.google.com/)
 - [Insomnia](https://insomnia.rest/)
 - [GitHub Actions](https://github.com/features/actions)
+
+### Contact and Support
