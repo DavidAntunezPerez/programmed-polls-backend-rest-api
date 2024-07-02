@@ -5,6 +5,7 @@ import type Poll from '../../models/dataInterfaces'
 import { pollCreateDTO } from '../../models/schemas'
 import { validate } from '../../utils/validation'
 import authenticate from '../../utils//auth/authenticate'
+import { createInstance } from '../../utils/createInstance'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Apply authentication middleware
@@ -63,6 +64,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         const pollRef = await db.collection('polls').add(newPoll)
+
+        // Check if startTime is now or in the future
+        const currentTime = Timestamp.now()
+        const timeDiff = parsedStartTime.toMillis() - currentTime.toMillis()
+
+        // If startTime is set for now, create the instance already so users can start voting
+        if (timeDiff <= 0) {
+          await createInstance(pollRef.id, duration, parsedStartTime)
+        }
+
         return res
           .status(201)
           .json({ message: 'Poll created successfully', pollId: pollRef.id })
