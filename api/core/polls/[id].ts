@@ -3,7 +3,7 @@ import { db } from '../../../config/firebaseConfig'
 import type Poll from '../../../models/dataInterfaces'
 import { pollEditDTO } from '../../../models/schemas'
 import { validate } from '../../../utils/validation'
-import authenticate from '../../../utils/authenticate'
+import authenticate from '../../../utils/auth/authenticate'
 import { Timestamp } from 'firebase-admin/firestore'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

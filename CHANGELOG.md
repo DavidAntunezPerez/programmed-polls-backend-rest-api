@@ -1,5 +1,17 @@
 # Version Changelog
 
+## 1.0.1
+
+### Improvements
+
+- Improved repository documentation and information
+
+## 1.0.0
+
+### Features
+
+- GET Results by ID is now available and working with ADMIN and NOT ADMIN mode.
+
 ## 0.4.0
 
 ### Features
