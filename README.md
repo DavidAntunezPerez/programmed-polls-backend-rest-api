@@ -66,7 +66,7 @@ Some of the most importants functionalities are:
 - Voting Mechanism _(Working since v0.4.0)_:
   - Cast Votes: Users can vote on active polls, with each vote being securely recorded.
   - Vote Validation: Ensure that each user can vote only once per poll. User must be authorized with Google Firebase Authentication in a Mobile or Web Application connected to Programmed Poll's firebase project.
-- Results Visualization _(Not developed yet)_:
+- Results Visualization _(Working since v1.0.0)_:
   View poll results in real-time, displaying the number of votes each option has received.
 
 > [!NOTE]
