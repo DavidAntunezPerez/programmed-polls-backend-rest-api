@@ -1,7 +1,7 @@
 import { db } from '../../config/firebaseConfig'
 import { Timestamp } from 'firebase-admin/firestore'
-import { Instance } from '../../models/dataInterfaces'
 import { VercelRequest, VercelResponse } from '@vercel/node'
+import { createInstance } from '../../utils/createInstance'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { method } = req
@@ -108,23 +108,4 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       res.setHeader('Allow', ['POST'])
       return res.status(405).end(`Method ${method} Not Allowed`)
   }
-}
-
-async function createInstance(
-  pollId: string,
-  duration: number,
-  startTime: Timestamp,
-) {
-  const endTime = Timestamp.fromDate(
-    new Date(startTime.toDate().getTime() + duration * 24 * 60 * 60 * 1000),
-  )
-
-  const newInstance: Instance = {
-    pollId,
-    startTime,
-    endTime,
-  }
-
-  const instanceRef = await db.collection('instances').add(newInstance)
-  return instanceRef.id
 }
