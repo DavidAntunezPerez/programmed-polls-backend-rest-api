@@ -3,8 +3,10 @@ import { VercelRequest, VercelResponse } from '@vercel/node'
 import Poll, { Instance, UserVote } from '../../../models/dataInterfaces'
 import authenticate from '../../../utils/auth/authenticate'
 import getMailFromUid from '../../../utils/auth/getMailFromUid'
+import applyCors from '../../../utils/auth/corsMiddleware'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  await new Promise(resolve => applyCors(req, res, resolve))
   await new Promise(resolve => authenticate(req, res, resolve))
 
   const { method, query } = req

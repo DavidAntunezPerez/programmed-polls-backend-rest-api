@@ -6,9 +6,11 @@ import { pollCreateDTO } from '../../models/schemas'
 import { validate } from '../../utils/validation'
 import authenticate from '../../utils//auth/authenticate'
 import { createInstance } from '../../utils/createInstance'
+import applyCors from '../../utils/auth/corsMiddleware'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Apply authentication middleware
+  await new Promise(resolve => applyCors(req, res, resolve))
   await new Promise(resolve => authenticate(req, res, resolve))
   const { method, body } = req
 
