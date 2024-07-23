@@ -5,8 +5,10 @@ import { pollEditDTO } from '../../../models/schemas'
 import { validate } from '../../../utils/validation'
 import authenticate from '../../../utils/auth/authenticate'
 import { Timestamp } from 'firebase-admin/firestore'
+import applyCors from '../../../utils/auth/corsMiddleware'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  await new Promise(resolve => applyCors(req, res, resolve))
   await new Promise(resolve => authenticate(req, res, resolve))
   const { method, query, body } = req
 
@@ -77,10 +79,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           })
         }
 
-        const { isValid, errors } = validate(
-          body,
-          pollEditDTO,
-        )
+        const { isValid, errors } = validate(body, pollEditDTO)
         if (!isValid) {
           return res.status(400).json({ message: 'Bad Request', errors })
         }
@@ -104,8 +103,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         const parsedStartTime = body.startTime
-        ? Timestamp.fromDate(new Date(body.startTime))
-        : pollData.startTime
+          ? Timestamp.fromDate(new Date(body.startTime))
+          : pollData.startTime
 
         // Create an object with the fields to update
         const updatedFields: Partial<Poll> = {

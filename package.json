@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "devDependencies": {
     "@types/node": "^20.14.9",
@@ -8,6 +8,7 @@
     "vercel": "^34.2.8"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "firebase-admin": "^12.2.0"
   }
 }

@@ -1,5 +1,11 @@
 # Version Changelog
 
+## 1.0.3
+
+### Fixes
+
+- Added CORS middleware to allow Web Applications access to the API
+
 ## 1.0.2
 
 ### Improvements
