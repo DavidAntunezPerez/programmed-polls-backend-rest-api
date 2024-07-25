@@ -31,12 +31,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         const pollData = pollDoc.data() as Poll
 
-        // Ensure that the poll belongs to the authenticated user
-        if (pollData.userId !== userId) {
-          return res.status(403).json({
-            message: 'Forbidden, you do not have access to this poll',
-          })
-        }
+        // (Not necessary for GetByID) Ensure that the poll belongs to the authenticated user
+        // if (pollData.userId !== userId) {
+        //   return res.status(403).json({
+        //     message: 'Forbidden, you do not have access to this poll',
+        //   })
+        // }
 
         const response = {
           pollId: id,
