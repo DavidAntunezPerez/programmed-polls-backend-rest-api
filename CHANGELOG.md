@@ -1,5 +1,11 @@
 # Version Changelog
 
+## 1.0.4
+
+### Fixes
+
+- Any user will be able to get a single Poll by ID. This will not provide any sensitive information and will only be possible if Poll owner shared their Poll ID with them.
+
 ## 1.0.3
 
 ### Fixes
