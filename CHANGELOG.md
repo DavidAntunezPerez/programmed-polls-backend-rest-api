@@ -1,5 +1,12 @@
 # Version Changelog
 
+## 1.0.5
+
+### Improvements
+
+- Updated README.md
+- New value in GET Poll by ID called hasUserVoted that will check if the user has voted in that specific poll
+
 ## 1.0.4
 
 ### Fixes
