@@ -160,7 +160,7 @@ First of all, you need to know that most of these endpoints require **_authentic
        }
        ```
 
-       If you want to get a single Poll information, you can do _/polls/{pollId}_, where ID is the Poll ID that you want to get.
+       If you want to get a single Poll information, you can do _/polls/{pollId}_, where ID is the Poll ID that you want to get. This endpoint will contain an extra value called `hasUserVoted` to check if the user that calls the endpoint has already voted in that poll.
 
        > You can get the Poll ID by: _using GET /polls endpoint (named as pollID)_ or _creating a Poll with POST /polls (will be shown in response as pollID)_.
 
@@ -177,9 +177,13 @@ First of all, you need to know that most of these endpoints require **_authentic
          "duration": 3,
          "isEnabled": true,
          "startTime": "2024-06-03T10:38:09.630Z",
-         "createdAt": "2024-06-03T10:38:09.012Z"
+         "createdAt": "2024-06-03T10:38:09.012Z",
+         "hasUserVoted": false
        }
        ```
+
+       > [!NOTE]  
+       > Remember that using the Get Polls endpoint you will retrieve all your Polls where you are the manager but using the GET Poll by ID will retrieve that Poll specifically without needing you to be the manager of the poll. Sharing a Poll ID will make users able to view and vote in your Poll but they will not be able to edit or delete it.
 
      - PATCH _/polls/{pollId}_:
 
