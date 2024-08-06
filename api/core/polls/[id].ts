@@ -15,6 +15,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Get userId from the authenticated user and the poll ID
   const userId = (req as any).user.uid
   const { id } = query
+  let hasUserVoted: boolean = false
 
   switch (method) {
     case 'GET':
@@ -30,6 +31,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         const pollData = pollDoc.data() as Poll
+
+        // Get the most recent instance for the given poll ID
+        const instancesSnapshot = await db
+          .collection('instances')
+          .where('pollId', '==', id)
+          .orderBy('startTime', 'desc')
+          .limit(1)
+          .get()
+
+        if (!instancesSnapshot.empty) {
+          const instanceDoc = instancesSnapshot.docs[0]
+
+          // Check if the user has already voted in this instance
+          const userVoteDoc = await db
+            .collection('instances')
+            .doc(instanceDoc.id)
+            .collection('votes')
+            .doc(userId)
+            .get()
+
+          // If the user has voted, set the value to true, else, it will be false
+          if (userVoteDoc.exists) {
+            hasUserVoted = true
+          }
+        }
 
         // (Not necessary for GetByID) Ensure that the poll belongs to the authenticated user
         // if (pollData.userId !== userId) {
@@ -48,6 +74,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           isEnabled: pollData.isEnabled,
           startTime: pollData.startTime.toDate().toISOString(),
           createdAt: pollData.createdAt.toDate().toISOString(),
+          hasUserVoted,
         }
 
         return res.status(200).json(response)
