@@ -182,8 +182,7 @@ First of all, you need to know that most of these endpoints require **_authentic
        }
        ```
 
-> [!NOTE]  
-> Remember that using the Get Polls endpoint you will retrieve all your Polls where you are the manager but using the GET Poll by ID will retrieve that Poll specifically without needing you to be the manager of the poll. Sharing a Poll ID will make users able to view and vote in your Poll but they will not be able to edit or delete it.
+         > Remember that using the Get Polls endpoint you will retrieve all your Polls where you are the manager but using the GET Poll by ID will retrieve that Poll specifically without needing you to be the manager of the poll. Sharing a Poll ID will make users able to view and vote in your Poll but they will not be able to edit or delete it.
 
      - PATCH _/polls/{pollId}_:
 
