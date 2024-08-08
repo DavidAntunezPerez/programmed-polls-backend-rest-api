@@ -51,6 +51,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           pollDescription: pollData.description,
           startTime: instanceData.startTime.toDate(),
           endTime: instanceData.endTime.toDate(),
+          options: pollData.options,
           optionCount: Array(pollData.options.length).fill(0),
           totalUsers: 0,
           totalVotes: 0,
@@ -101,9 +102,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         response.totalVotes = sumTotalVotes
 
-        // Calculate completion rate
-        response.completionRate = response.optionCount.map(
-          count => count / response.totalVotes,
+        // Calculate the completion rate
+        response.completionRate = response.optionCount.map(count =>
+          response.totalVotes === 0 ? 0 : count / response.totalVotes,
         )
 
         // Calculate voting period

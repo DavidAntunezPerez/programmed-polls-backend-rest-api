@@ -182,8 +182,8 @@ First of all, you need to know that most of these endpoints require **_authentic
        }
        ```
 
-       > [!NOTE]  
-       > Remember that using the Get Polls endpoint you will retrieve all your Polls where you are the manager but using the GET Poll by ID will retrieve that Poll specifically without needing you to be the manager of the poll. Sharing a Poll ID will make users able to view and vote in your Poll but they will not be able to edit or delete it.
+> [!NOTE]  
+> Remember that using the Get Polls endpoint you will retrieve all your Polls where you are the manager but using the GET Poll by ID will retrieve that Poll specifically without needing you to be the manager of the poll. Sharing a Poll ID will make users able to view and vote in your Poll but they will not be able to edit or delete it.
 
      - PATCH _/polls/{pollId}_:
 
@@ -244,6 +244,7 @@ First of all, you need to know that most of these endpoints require **_authentic
     - **`pollDescription`**: Display the description of the poll to provide more context.
     - **`startTime`**: Start date of the instance.
     - **`endTime`**: End date of the instance.
+    - **`options`**: Array with the name of all the different options in the poll.
     - **`optionCount`**: Array with the vote count results for all options.
 
     **STADISTICAL INFORMATION**:
@@ -268,6 +269,7 @@ First of all, you need to know that most of these endpoints require **_authentic
       "pollDescription": "Can you vote?",
       "startTime": "2024-07-02T06:26:00.000Z",
       "endTime": "2024-07-05T06:26:00.000Z",
+      "options": ["Yes", "No"],
       "optionCount": [2, 1],
       "totalUsers": 2,
       "totalVotes": 3,
