@@ -1,5 +1,15 @@
 # Version Changelog
 
+## 1.0.6
+
+### Improvements
+
+- Poll results are now displaying the Poll options in a new field
+
+### Fixes
+
+- Fixed displaying null options when calculating the completion rate in specific cases
+
 ## 1.0.5
 
 ### Improvements
