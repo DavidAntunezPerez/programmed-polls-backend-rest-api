@@ -1,5 +1,11 @@
 # Version Changelog
 
+## 1.0.7
+
+### Fixes
+
+- Fixed critical and high vulnerabilities in `package.json`
+
 ## 1.0.6
 
 ### Improvements
