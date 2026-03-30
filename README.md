@@ -1,13 +1,13 @@
-# Programmed Polls by An2 - Backend Rest API
+# Programmed Polls by dantudev - Backend Rest API
 
-Create, schedule, and manage polls with **_Programmed Polls by An2_**.
+Create, schedule, and manage polls with **_Programmed Polls by dantudev_**.
 Enjoy features such as poll voting, results visualization, and much more, all within this project.
 
 ## Related repositories
 
 This project contains a full set of applications and solutions:
 
-- [Backend REST API](https://github.com/DavidAntunezPerez/programmed-polls-backend-rest-api)
+- [Backend REST API](https://github.com/dantudev/programmed-polls-backend-rest-api)
 - Web Application (_coming soon..._)
 - Mobile Application (_coming soon..._)
 
@@ -23,7 +23,7 @@ This project contains a full set of applications and solutions:
 
 - To use the backend deployed version (Production and Preview):
   - [Production](https://programmed-polls-backend-rest-api.vercel.app/)
-  - [Other deployments: (Preview, Branch deploys...)](https://github.com/DavidAntunezPerez/programmed-polls-backend-rest-api/deployments)
+  - [Other deployments: (Preview, Branch deploys...)](https://github.com/dantudev/programmed-polls-backend-rest-api/deployments)
 
 > [!IMPORTANT]  
 > You need to have a JWT token or ID Token from my _Firebase Web Application connected apps_ or any other way of using Firebase Auth system into programmed polls in order to use the backend endpoints. Detailed explanation [here](#endpoints-in-detail)
@@ -49,7 +49,7 @@ vercel dev
 
 ### Description and functionalities
 
-This backend REST API is designed to be robust, secure, and easy to integrate with other applications, making it an ideal choice for developers looking to add polling functionality to their projects. Whether you are building a web app, mobile app, or any other platform, Programmed Polls by An2 provides all the necessary tools and features to manage polls effectively. You can check the already made Frontend Applications working with this application at [here](#related-repositories)
+This backend REST API is designed to be robust, secure, and easy to integrate with other applications, making it an ideal choice for developers looking to add polling functionality to their projects. Whether you are building a web app, mobile app, or any other platform, Programmed Polls by dantudev provides all the necessary tools and features to manage polls effectively. You can check the already made Frontend Applications working with this application at [here](#related-repositories)
 
 Some of the most importants functionalities are:
 
@@ -72,7 +72,7 @@ Some of the most importants functionalities are:
   View poll results in real-time, displaying the number of votes each option has received.
 
 > [!NOTE]
-> You can view the version updates with new features, bugfixes and improvements in the [CHANGELOG.md](https://github.com/DavidAntunezPerez/programmed-polls-backend-rest-api/blob/main/CHANGELOG.md) located in this repository.
+> You can view the version updates with new features, bugfixes and improvements in the [CHANGELOG.md](https://github.com/dantudev/programmed-polls-backend-rest-api/blob/main/CHANGELOG.md) located in this repository.
 
 #### Endpoints in detail
 
@@ -336,8 +336,8 @@ This Backend Rest API has been made with:
 
 If you have any questions, issues, or suggestions regarding this project, please don't hesitate to reach out:
 
-- You can always open a new [issue](https://github.com/DavidAntunezPerez/programmed-polls-backend-rest-api/issues) or [discussion](https://github.com/DavidAntunezPerez/programmed-polls-backend-rest-api/discussions) in this repository.
+- You can always open a new [issue](https://github.com/dantudev/programmed-polls-backend-rest-api/issues) or [discussion](https://github.com/dantudev/programmed-polls-backend-rest-api/discussions) in this repository.
 - For contact or special support/questions... you can contact a repository administrator:
-  - David Antúnez Pérez: [GitHub](https://github.com/davidantunezperez), [eMail](mailto:antunezdavid2003@gmail.com) or [Linkedin](https://www.linkedin.com/in/davidantunezperez).
+  - David Antúnez Pérez: [GitHub](https://github.com/dantudev), [eMail](mailto:antunezdavid2003@gmail.com) or [Linkedin](https://www.linkedin.com/in/davidantunezperez).
 
 Thank you for your interest and support!
